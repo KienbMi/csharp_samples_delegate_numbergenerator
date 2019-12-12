@@ -21,7 +21,7 @@ namespace NumberGenerator.Test
             //Act
             try
             {
-                numberGenerator.NumberChanged -= baseObserver.OnNextNumber;
+                numberGenerator.NextNumber -= baseObserver.OnNextNumber;
             }
             catch (Exception ex)
             {

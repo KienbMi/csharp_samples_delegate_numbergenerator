@@ -22,7 +22,7 @@ namespace NumberGenerator.Logic
 
         #region Constructor
 
-        public QuickTippObserver(IObservable numberGenerator) : base(numberGenerator, 6, 1, 45)
+        public QuickTippObserver(RandomNumberGenerator numberGenerator) : base(numberGenerator, 6, 1, 45)
         {
             QuickTippNumbers = new List<int>();
         }
@@ -31,7 +31,7 @@ namespace NumberGenerator.Logic
 
         #region Methods
 
-        public override void OnNextNumber(int number)
+        public override void OnNextNumber(object sender, int number)
         {
             if (number >= LowerRange && number <= UpperRange)
             {
@@ -41,7 +41,7 @@ namespace NumberGenerator.Logic
                 }
             }
 
-            base.OnNextNumber(number);
+            base.OnNextNumber(sender, number);
         }
 
         public override string ToString()

@@ -38,7 +38,7 @@ namespace NumberGenerator.Logic
 
         #region Constructors
 
-        public StatisticsObserver(IObservable numberGenerator, int countOfNumbersToWaitFor) : base(numberGenerator, countOfNumbersToWaitFor)
+        public StatisticsObserver(RandomNumberGenerator numberGenerator, int countOfNumbersToWaitFor) : base(numberGenerator, countOfNumbersToWaitFor)
         {
 
         }
@@ -61,7 +61,7 @@ namespace NumberGenerator.Logic
             return sb.ToString();
         }
 
-        public override void OnNextNumber(int number)
+        public override void OnNextNumber(object sender, int number)
         {
             if (base.CountOfNumbersReceived == 0)
             {
@@ -77,7 +77,7 @@ namespace NumberGenerator.Logic
             Sum += number;
             Avg = Sum / (base.CountOfNumbersReceived + 1);
 
-            base.OnNextNumber(number);
+            base.OnNextNumber(sender, number);
         }
 
         public override string GetInfo()

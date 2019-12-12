@@ -35,7 +35,7 @@ namespace NumberGenerator.Logic
 
         #region Constructors
 
-        public RangeObserver(IObservable numberGenerator, int numberOfHitsToWaitFor, int lowerRange, int upperRange) : base(numberGenerator, int.MaxValue)
+        public RangeObserver(RandomNumberGenerator numberGenerator, int numberOfHitsToWaitFor, int lowerRange, int upperRange) : base(numberGenerator, int.MaxValue)
         {
             if (numberOfHitsToWaitFor <= 0)
             {
@@ -69,7 +69,7 @@ namespace NumberGenerator.Logic
             return sb.ToString();
         }
 
-        public override void OnNextNumber(int number)
+        public override void OnNextNumber(object sender, int number)
         {
             if (number >= LowerRange && number <= UpperRange)
             {
@@ -83,7 +83,7 @@ namespace NumberGenerator.Logic
             {
                 DetachFromNumberGenerator();
             }
-            base.OnNextNumber(number);
+            base.OnNextNumber(sender, number);
         }
 
 

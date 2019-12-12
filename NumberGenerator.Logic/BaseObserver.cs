@@ -12,7 +12,7 @@ namespace NumberGenerator.Logic
     {
         #region Fields
 
-        private readonly IObservable _numberGenerator;
+        private readonly RandomNumberGenerator _numberGenerator;
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace NumberGenerator.Logic
 
         #region Constructors
 
-        public BaseObserver(IObservable numberGenerator, int countOfNumbersToWaitFor)
+        public BaseObserver(RandomNumberGenerator numberGenerator, int countOfNumbersToWaitFor)
         {
             if (countOfNumbersToWaitFor <= 0)
             {
@@ -35,7 +35,7 @@ namespace NumberGenerator.Logic
             _numberGenerator = numberGenerator;
             CountOfNumbersToWaitFor = countOfNumbersToWaitFor;
 
-            _numberGenerator.NumberChanged += this.OnNextNumber;
+            _numberGenerator.NextNumber += this.OnNextNumber;
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace NumberGenerator.Logic
         /// Wird aufgerufen wenn der NumberGenerator eine neue Zahl generiert hat.
         /// </summary>
         /// <param name="number"></param>
-        public virtual void OnNextNumber(int number)
+        public virtual void OnNextNumber(object sender, int number)
         {
             CountOfNumbersReceived++;
 
@@ -76,7 +76,7 @@ namespace NumberGenerator.Logic
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"   >> {this.GetType().Name}: {GetTypeSpecificDetachText()} => I am not interested in new numbers anymore => Detach().");
             Console.ResetColor();
-            _numberGenerator.NumberChanged -= this.OnNextNumber;
+            _numberGenerator.NextNumber -= this.OnNextNumber;
         }
 
         protected string GetBaseInfo()

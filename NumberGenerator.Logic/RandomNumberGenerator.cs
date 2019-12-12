@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using static NumberGenerator.Logic.IObservable;
 
 namespace NumberGenerator.Logic
 {
@@ -12,7 +11,7 @@ namespace NumberGenerator.Logic
     /// Zwischen der Generierung der einzelnen Zufallsnzahlen erfolgt jeweils eine Pause.
     /// Die Generierung erfolgt so lange, solange Beobachter registriert sind.
     /// </summary>
-    public class RandomNumberGenerator : IObservable
+    public class RandomNumberGenerator
     {
         #region Constants
 
@@ -29,8 +28,7 @@ namespace NumberGenerator.Logic
         private int _delay = 1000;
         private int newNumber;
 
-        public NextNumberHandler NumberChanged { get; set; }
-
+        public event EventHandler<int> NextNumber;
 
         #endregion
 
@@ -75,14 +73,17 @@ namespace NumberGenerator.Logic
         /// <param name="number">Die generierte Zahl.</param>
         public void NotifyObservers(int number)
         {
-            NumberChanged?.Invoke(number);
+            if (NextNumber != null)
+            {
+                NextNumber(this, number);
+            }
         }
 
         #endregion
 
         public override string ToString()
         {
-            return $"{nameof(RandomNumberGenerator)} with {NumberChanged.GetInvocationList().Length} Observer";
+            return $"{nameof(RandomNumberGenerator)} with {NextNumber.GetInvocationList().Length} Observer";
         }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace NumberGenerator.Logic
         public void StartNumberGeneration()
         {
 
-            while (NumberChanged != null)
+            while (NextNumber != null)
             {
                 newNumber = _random.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE);
                 Console.WriteLine($">> {nameof(RandomNumberGenerator)}: Number generated: '{newNumber}'");
